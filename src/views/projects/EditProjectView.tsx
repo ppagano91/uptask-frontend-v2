@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProjectById } from "@/api/ProjectAPI";
 import EditProjectForm from "@/components/projects/EditProjectForm";
 
-const EditProject = () => {
+const EditProjectView = () => {
   const params = useParams();
   const projectId = params.projectId!;
   const { data, isLoading, isError } = useQuery({
@@ -17,4 +17,4 @@ const EditProject = () => {
   if (data) return <EditProjectForm data={data.project} projectId={projectId} />
 }
 
-export default EditProject
+export default EditProjectView

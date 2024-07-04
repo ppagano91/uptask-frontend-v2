@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProjects } from "@/api/ProjectAPI";
 
 const DashboardView = () => {
-  const { data, isError, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["projects"],
     queryFn: getProjects,
   });
@@ -79,7 +79,7 @@ const DashboardView = () => {
                       </Menu.Item>
                       <Menu.Item>
                         <Link
-                          to={``}
+                          to={`/projects/${project._id}/edit`}
                           className="block px-3 py-1 text-sm leading-6 text-gray-900"
                         >
                           Editar Proyecto

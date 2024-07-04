@@ -9,7 +9,7 @@ import { createProject } from "@/api/ProjectAPI";
 const CreateProjectView = () => {
 
     const navigate = useNavigate();
-    
+
     const initialValues: ProjectFormData = {
         projectName: "",
         clientName: "",

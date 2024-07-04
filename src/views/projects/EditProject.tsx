@@ -11,11 +11,10 @@ const EditProject = () => {
     queryFn: () => getProjectById(projectId),
     retry: false
   });
-  console.log(data);
 
   if(isLoading) return "Cargando..."
   if(isError) return <Navigate to="/404" />
-  if (data) return <EditProjectForm data={data.project} />
+  if (data) return <EditProjectForm data={data.project} projectId={projectId} />
 }
 
 export default EditProject

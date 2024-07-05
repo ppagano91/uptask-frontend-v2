@@ -48,7 +48,6 @@ export default function AddTaskModal() {
             formData,
             projectId
         };
-        console.log(data);
         mutate(data);
     }
     return (

@@ -2,6 +2,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query";
 import { getProjectById } from "@/api/ProjectAPI";
 import AddTaskModal from "@/components/tasks/AddTaskModal";
+import TaskList from "@/components/tasks/TaskList";
 
 const ProjectDetailsView = () => {
 
@@ -16,6 +17,7 @@ const ProjectDetailsView = () => {
 
   if(isLoading) return "Cargando..."
   if(isError) return <Navigate to="/404" />
+  console.log(data);
   if (data) return (
     <>
         <h1 className="text-5xl font-black">{data.project.projectName}</h1>
@@ -30,6 +32,7 @@ const ProjectDetailsView = () => {
                 Agregar Tarea
             </button>
         </nav>
+        <TaskList tasks={data.project.tasks}/>
         <AddTaskModal />
     </>
   )

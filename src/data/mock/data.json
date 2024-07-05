@@ -84,6 +84,16 @@
         "name": "Test Portal Functionality",
         "description": "Test all functionalities of the healthcare portal",
         "status": "onHold"
+      },
+      {
+        "name": "Create User Authentication",
+        "description": "Develop and integrate user authentication system",
+        "status": "completed"
+      },
+      {
+        "name": "Review Security Measures",
+        "description": "Conduct a comprehensive review of the portal's security measures",
+        "status": "underReview"
       }
     ]
   },

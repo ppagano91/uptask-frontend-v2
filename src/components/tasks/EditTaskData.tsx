@@ -17,11 +17,9 @@ const EditTaskData = () => {
         enabled: !!taskId
     });
 
-    console.log(data);
-
     if (isError) return <Navigate to={"/404"}/>
     if (data) return (
-        <EditTaskModal data={data.task}/>
+        <EditTaskModal data={data}/>
     )
     }
 

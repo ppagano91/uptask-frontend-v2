@@ -46,7 +46,11 @@ const TaskCard = ({ task }: TaskCardProps) => {
                         <MenuItems
                             className="absolute right-0 z-20 mt-2 w-52 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                             <MenuItem>
-                                <button type='button' className='block px-3 py-1 text-sm leading-6 text-gray-900'>
+                                <button
+                                    type='button'
+                                    className='block px-3 py-1 text-sm leading-6 text-gray-900'
+                                    onClick={() => navigate(location.pathname + `?viewTaskId=${task._id}`)}
+                                    >
                                     Ver Tarea
                                 </button>
                             </MenuItem>

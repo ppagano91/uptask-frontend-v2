@@ -1,57 +1,57 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import { UserLoginForm } from "@/types/index";
+import { ForgotPasswordForm } from "../../types";
 import ErrorMessage from "@/components/ErrorMessage";
-import { authenticateUser } from "@/api/AuthAPI";
+import { forgotPassword } from "@/api/AuthAPI";
 import { toast } from "react-toastify";
 
-export default function LoginView() {
-
-  const initialValues: UserLoginForm = {
-    email: '',
-    password: '',
+export default function ForgotPasswordView() {
+  const initialValues: ForgotPasswordForm = {
+    email: ''
   }
-  const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: initialValues })
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({ defaultValues: initialValues });
 
   const { mutate } = useMutation({
-    mutationFn: authenticateUser,
+    mutationFn: forgotPassword,
     onError: (error) => {
-      toast.error(error.message)
+        toast.error(error.message);
     },
     onSuccess: (data) => {
-      toast.success(data.msg);
+        toast.success(data.msg);
+        reset();
     }
   })
-
-  const handleLogin = (formData: UserLoginForm) => {
+  
+  const handleForgotPassword = (formData: ForgotPasswordForm) => {
     mutate(formData);
   }
 
+
   return (
     <>
-      <h1 className="text-5xl font-black text-white">Iniciar Sesión</h1>
+      <h1 className="text-5xl font-black text-white">Reestablecer Contraseña</h1>
       <p className="text-2xl font-light text-white mt-5">
-        Completa el formulario para {''}
-        <span className=" text-fuchsia-500 font-bold"> iniciar sesión</span>
+        ¿Olvidaste tu contraseña? Envía un mail para {''}
+        <span className=" text-fuchsia-500 font-bold">reestablecer la contraseña</span>
       </p>
       <form
-        onSubmit={handleSubmit(handleLogin)}
-        className="space-y-8 p-10 bg-white mt-10"
+        onSubmit={handleSubmit(handleForgotPassword)}
+        className="space-y-8 p-10  bg-white mt-10"
         noValidate
       >
         <div className="flex flex-col gap-5">
           <label
             className="font-normal text-2xl"
+            htmlFor="email"
           >Email</label>
-
           <input
             id="email"
             type="email"
             placeholder="Email de Registro"
             className="w-full p-3  border-gray-300 border"
             {...register("email", {
-              required: "El Email es obligatorio",
+              required: "El Email de registro es obligatorio",
               pattern: {
                 value: /\S+@\S+\.\S+/,
                 message: "E-mail no válido",
@@ -63,49 +63,31 @@ export default function LoginView() {
           )}
         </div>
 
-        <div className="flex flex-col gap-5">
-          <label
-            className="font-normal text-2xl"
-          >Password</label>
-
-          <input
-            type="password"
-            placeholder="Password de Registro"
-            className="w-full p-3  border-gray-300 border"
-            {...register("password", {
-              required: "El Password es obligatorio",
-            })}
-          />
-          {errors.password && (
-            <ErrorMessage>{errors.password.message}</ErrorMessage>
-          )}
-        </div>
-
         <input
           type="submit"
-          value='Iniciar Sesión'
+          value='Enviar Instrucciones'
           className="bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3  text-white font-black  text-xl cursor-pointer"
         />
       </form>
 
       <nav className="mt-10 flex flex-col space-y-4">
         <p className="text-center text-gray-300 font-normal">
-            ¿No estás registrado?{" "}
+            ¿Ya tienes cuenta?{" "}
             <Link
-                to={"/auth/register"}
+                to={"/auth/login"}
                 className="text-fuchsia-600 font-bold"
                 >
-                  Crear Cuenta
+                  Iniciar Sesión
             </Link>
         </p>
 
         <p className="text-center text-gray-300 font-normal">
-            ¿Olvidaste tu contraseña?{" "}
+            ¿No tienes cuenta? {" "}
             <Link
-                to={"/auth/forgot-password"}
+                to={"/auth/register"}
                 className="text-fuchsia-600 font-bold"
                 >
-                  Reestablecer
+                  Regístrate
             </Link>
         </p>
       </nav>

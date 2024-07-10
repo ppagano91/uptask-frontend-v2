@@ -1,19 +1,42 @@
-import type { NewPasswordForm } from "../../types";
+import type { ConfirmToken, NewPasswordForm } from "../../types";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "@/components/ErrorMessage";
+import { useMutation } from "@tanstack/react-query";
+import { updatePasswordWithToken } from "@/api/AuthAPI";
+import { toast } from "react-toastify";
 
+type NewPasswordFormProps = {
+    token: ConfirmToken["token"]
+}
 
-export default function NewPasswordForm() {
+export default function NewPasswordForm({token}: NewPasswordFormProps) {
     const navigate = useNavigate()
     const initialValues: NewPasswordForm = {
         password: '',
         password_confirmation: '',
     }
     const { register, handleSubmit, watch, reset, formState: { errors } } = useForm({ defaultValues: initialValues });
+    const { mutate } = useMutation({
+        mutationFn: updatePasswordWithToken,
+        onError: (error) => {
+            toast.error(error.message);
+        },
+        onSuccess: (data) => {
+            toast.success(data.msg);
+            reset();
+            navigate("/auth/login");
+        }
+    })
 
-
-    const handleNewPassword = (formData: NewPasswordForm) => {}
+    const handleNewPassword = (formData: NewPasswordForm) => {
+        console.log(token);
+        const data = {
+            formData,
+            token
+        };
+        mutate(data);
+    }
 
     const password = watch('password');
 
@@ -70,7 +93,7 @@ export default function NewPasswordForm() {
 
                 <input
                     type="submit"
-                    value='Establecer Password'
+                    value='Reestablecer Password'
                     className="bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3  text-white font-black  text-xl cursor-pointer"
                 />
             </form>

@@ -16,9 +16,13 @@ export async function createProject(formData: ProjectFormData){
 export async function getProjects(){
     try {
         const { data } = await api.get("/projects");
+
         const response = dashboardProjectSchema.safeParse(data);
+        
         if(response.success){
             return response.data.projects;
+        } else{
+            return [];
         }
     } catch (error) {
         if(isAxiosError(error) && error.response){

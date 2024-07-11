@@ -5,9 +5,10 @@ import { Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteProject, getProjects } from "@/api/ProjectAPI";
 import { toast } from "react-toastify";
+import Spinner from "@/components/Spinner";
 
 const DashboardView = () => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["projects"],
     queryFn: getProjects,
   });
@@ -30,15 +31,21 @@ const DashboardView = () => {
       <p className="text-2xl font-light text-gray-500 mt-5">
         Maneja y Administra tus proyectos
       </p>
-      <nav className="my-5">
-        <Link
-          className="bg-purple-400 hover:bg-purple-500 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors"
-          to="/projects/create"
-        >
-          Nuevo Proyecto
-        </Link>
-      </nav>
-      {isLoading && <span>"Cargando..."</span>}
+      {isLoading && 
+        <Spinner />
+      }
+
+      { !isLoading && !isError &&
+          <nav className="my-5">
+            <Link
+              className="bg-purple-400 hover:bg-purple-500 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors"
+              to="/projects/create"
+              >
+              Nuevo Proyecto
+            </Link>
+          </nav>
+      }
+      
       {data?.length ? (
         <ul
           role="list"

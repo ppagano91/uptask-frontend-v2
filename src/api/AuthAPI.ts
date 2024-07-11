@@ -45,6 +45,7 @@ export async function authenticateUser(formData: UserLoginForm){
     try {
         const url = "/auth/login";
         const { data } = await api.post(url, formData);
+        localStorage.setItem("AUTH_TOKEN", data.token);
         return data;
     } catch (error) {
         if(isAxiosError(error) && error.response){
@@ -95,6 +96,18 @@ export async function updatePasswordWithToken({formData, token}: {formData: NewP
             console.log(error)
             throw new Error(error.response.data.message);
             // throw { message: error.response.data.message, status: error.response.status };
+        }
+    }
+}
+
+export async function getUser(){
+    try {
+        const { data } = await api("/api/user");
+        console.log(data);
+    } catch (error) {
+        if(isAxiosError(error) && error.response){
+            console.log(error)
+            throw new Error(error.response.data.message);
         }
     }
 }

@@ -5,8 +5,13 @@ import AddTaskModal from "@/components/tasks/AddTaskModal";
 import TaskList from "@/components/tasks/TaskList";
 import EditTaskData from "@/components/tasks/EditTaskData";
 import TaskModalDetails from "@/components/tasks/TaskModalDetails";
+import { useAuth } from "@/hooks/useAuth";
+import { isManager } from "@/utils/policies";
+import { useMemo } from "react";
 
 const ProjectDetailsView = () => {
+
+  const { data: user, isLoading: authLoading } = useAuth();
 
   const navigate = useNavigate();
   const params = useParams();
@@ -17,29 +22,37 @@ const ProjectDetailsView = () => {
     retry: false
   });
 
-  if(isLoading) return "Cargando..."
+  const canEdit = useMemo(() => data?.manager === user?._id, [data, user])
+
+  if(isLoading && authLoading) return "Cargando..."
   if(isError) return <Navigate to="/404" />
-  if (data) return (
+
+
+  
+  if (data && user) return (
     <>
         <h1 className="text-5xl font-black">{data.project.projectName}</h1>
         <p className="text-2xl font-light text-gray-500 mt-5">{data.project.description}</p>
 
-        <nav className="my-5 flex gap-3">
-            <button
-                type="button"
-                className="bg-purple-600 hover:bg-purple-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors"
-                onClick={() => navigate(location.pathname+"?newTask=true")}
+        {
+          isManager(data.project.manager, user._id) &&
+          <nav className="my-5 flex gap-3">
+              <button
+                  type="button"
+                  className="bg-purple-600 hover:bg-purple-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors"
+                  onClick={() => navigate(location.pathname+"?newTask=true")}
+                  >
+                  Agregar Tarea
+              </button>
+              <Link to={"team"}
+                className="bg-fuchsia-600 hover:bg-fuchsia-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors"
                 >
-                Agregar Tarea
-            </button>
-            <Link to={"team"}
-              className="bg-fuchsia-600 hover:bg-fuchsia-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors"
-              >
-              Colaboradores
-            </Link>
-        </nav>
+                Colaboradores
+              </Link>
+          </nav>
+        }
 
-        <TaskList tasks={data.project.tasks}/>
+        <TaskList tasks={data.project.tasks} canEdit={canEdit}/>
         <AddTaskModal />
         <EditTaskData />
         <TaskModalDetails />

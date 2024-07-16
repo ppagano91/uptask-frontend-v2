@@ -22,13 +22,12 @@ const ProjectDetailsView = () => {
     retry: false
   });
 
-  const canEdit = useMemo(() => data?.manager === user?._id, [data, user])
+  const canEdit = useMemo(() => data?.project.manager === user?._id, [data, user])
 
   if(isLoading && authLoading) return "Cargando..."
   if(isError) return <Navigate to="/404" />
 
 
-  
   if (data && user) return (
     <>
         <h1 className="text-5xl font-black">{data.project.projectName}</h1>

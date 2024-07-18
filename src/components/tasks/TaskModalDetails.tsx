@@ -98,8 +98,8 @@ export default function TaskModalDetails() {
                                     {data.completedBy.length ? 
                                     <>
                                         <p className="font-bold text-2xl text-slate-600 my-5">Historial de Cambios</p>
-
-                                        <ul className='list-decimal'>
+                                        
+                                        <ul className='list-decimal max-h-20 overflow-y-auto pl-5'>
                                             {data.completedBy.map((activityLog) => (
                                                 <li key={activityLog._id}>
                                                     <span className="font-bold text-slate-600">{statusTranslations[activityLog.status]}</span>

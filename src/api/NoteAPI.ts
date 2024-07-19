@@ -1,6 +1,6 @@
 import api from "@/lib/axios";
 import { isAxiosError } from "axios";
-import { NoteFormData, Project, Task } from "../types";
+import { Note, NoteFormData, Project, Task } from "../types";
 
 type NoteAPIType = {
     formData: NoteFormData,

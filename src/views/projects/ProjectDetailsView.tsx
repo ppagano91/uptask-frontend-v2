@@ -1,6 +1,6 @@
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query";
-import { getProjectById } from "@/api/ProjectAPI";
+import { getFullProject } from "@/api/ProjectAPI";
 import AddTaskModal from "@/components/tasks/AddTaskModal";
 import TaskList from "@/components/tasks/TaskList";
 import EditTaskData from "@/components/tasks/EditTaskData";
@@ -18,11 +18,11 @@ const ProjectDetailsView = () => {
   const projectId = params.projectId!;
   const { data, isLoading, isError } = useQuery({
     queryKey: ["detailProject", projectId],
-    queryFn: () => getProjectById(projectId),
+    queryFn: () => getFullProject(projectId),
     retry: false
   });
 
-  const canEdit = useMemo(() => data?.project.manager === user?._id, [data, user])
+  const canEdit = useMemo(() => data?.manager === user?._id, [data, user])
 
   if(isLoading && authLoading) return "Cargando..."
   if(isError) return <Navigate to="/404" />
@@ -30,11 +30,11 @@ const ProjectDetailsView = () => {
 
   if (data && user) return (
     <>
-        <h1 className="text-5xl font-black">{data.project.projectName}</h1>
-        <p className="text-2xl font-light text-gray-500 mt-5">{data.project.description}</p>
+        <h1 className="text-5xl font-black">{data.projectName}</h1>
+        <p className="text-2xl font-light text-gray-500 mt-5">{data.description}</p>
 
         {
-          isManager(data.project.manager, user._id) &&
+          isManager(data.manager, user._id) &&
           <nav className="my-5 flex gap-3">
               <button
                   type="button"
@@ -51,7 +51,7 @@ const ProjectDetailsView = () => {
           </nav>
         }
 
-        <TaskList tasks={data.project.tasks} canEdit={canEdit}/>
+        <TaskList tasks={data.tasks} canEdit={canEdit}/>
         <AddTaskModal />
         <EditTaskData />
         <TaskModalDetails />

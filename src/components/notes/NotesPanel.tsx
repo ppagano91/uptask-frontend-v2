@@ -1,4 +1,3 @@
-import React from 'react'
 import AddNoteForm from './AddNoteForm'
 import { Task } from '@/types/index'
 import NoteDetail from './NoteDetail'
